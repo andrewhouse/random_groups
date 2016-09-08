@@ -14,6 +14,7 @@ class RandomGroups:
         self.run_setup_functions()
 
     def run_setup_functions(self):
+        """ Functions to be run during initilization """
         self.set_adjectives()
         self.set_nouns()
         self.set_students()
@@ -24,13 +25,17 @@ class RandomGroups:
     def set_adjectives(self):
         with open('adjectives.txt') as inputAdjectives:
             self.adjectives = inputAdjectives
+            """ Strip Off Newlines"""
             self.adjectives = [line.rstrip('\n').split(',') for line in self.adjectives]
+            """ Flatten List """
             self.adjectives = [item for sublist in self.adjectives for item in sublist ]
 
     def set_nouns(self):
         with open('nouns.txt') as inputNouns:
             self.nouns = inputNouns
+            """ Strip Off Newlines"""
             self.nouns = [line.rstrip('\n').split(',') for line in self.nouns]
+            """ Flatten List """
             self.nouns = [item for sublist in self.nouns for item in sublist ]
 
     def set_students(self):
@@ -38,6 +43,7 @@ class RandomGroups:
             self.students = json.load(f)
 
     def set_group(self):
+        """ Main function to gather the groups """
         while len(self.student_list_copy) > 0:
             if len(self.student_list_copy) >= self.number_per_group:
                 choices = self.random_add_to_group()
@@ -48,26 +54,34 @@ class RandomGroups:
             self.remove(choices)
 
     def add_remaining_to_groups(self):
+        """ Add leftover students to groups if there are
+        more than one remaining students but not enough
+        for a full group """
         choices = copy.deepcopy(self.student_list_copy)
         self.groups.append(choices)
         return choices
 
     def random_add_to_group(self):
+        """ Randomly add students to group based on the 
+        passed in number per group"""
         choices = random.sample(self.student_list_copy, self.number_per_group)
         self.groups.append(choices)
         return choices
 
     def add_one_to_group(self):
+        """ Add leftover student to an existing group at random"""
         choices = [self.student_list_copy[0]]
         smallest_group_index = self.groups.index(min(self.groups, key=len))
         self.groups[smallest_group_index].append(self.student_list_copy[0])
         return choices
 
     def remove(self, choices):
+        """ Remove selected students from the selection list """
         for choice in choices:
             self.student_list_copy.remove(choice)
 
     def print_groups(self):
+        """ Print the groups to the terminal """
         os.system('clear')
         print("\n" * 8)
         for group in self.groups:
@@ -80,6 +94,7 @@ class RandomGroups:
 
 
 def run():
+    """ Fuction that instantiates the class and calls print groups"""
     try:
         number_per_group = int(argv[1])
         groups = RandomGroups(number_per_group)
