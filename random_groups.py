@@ -17,6 +17,7 @@ class RandomGroups:
         self.set_adjectives()
         self.set_nouns()
         self.set_students()
+        random.shuffle(self.students)
         self.student_list_copy = copy.deepcopy(self.students)
         self.set_group()
 
