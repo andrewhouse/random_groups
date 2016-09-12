@@ -52,6 +52,7 @@ class RandomGroups:
             else:
                 choices = self.add_remaining_to_groups()
             self.remove(choices)
+        self.add_teams_to_groups()
 
     def add_remaining_to_groups(self):
         """ Add leftover students to groups if there are
@@ -79,18 +80,24 @@ class RandomGroups:
         """ Remove selected students from the selection list """
         for choice in choices:
             self.student_list_copy.remove(choice)
-
-    def print_groups(self):
-        """ Print the groups to the terminal """
-        os.system('clear')
-        print("\n" * 8)
+            
+    def add_teams_to_groups(self):
+        self.teamed_groups = []
         for group in self.groups:
             adj = random.choice(self.adjectives).capitalize()
             noun = random.choice(self.nouns).capitalize()
             str_group = ", ".join(group)
             teams = "Team {0} {1}: {2}".format(adj, noun, str_group)
-            print(teams)
-            print(len(teams) * '-' + "\n")
+            self.teamed_groups.append(teams)
+
+
+    def print_groups(self):
+        """ Print the groups to the terminal """
+        os.system('clear')
+        print("\n" * 8)
+        for group in self.teamed_groups:
+            print(group)
+            print(len(group) * '-' + "\n")
 
 
 def run():
