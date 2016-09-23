@@ -5,6 +5,7 @@ import json
 from sys import argv
 
 class RandomGroups:
+# Comment
     def __init__(self, number_per_group=2):
         self.number_per_group = number_per_group
         self.adjectives = []
